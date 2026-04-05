@@ -1,4 +1,4 @@
-# Histopathologic Cancer Detection: Comprehensive Master Report (Phases 1-16)
+# Histopathologic Cancer Detection: Comprehensive Master Report
 
 The following is summary of the Kaggle Histopathologic Cancer Detection project, covering Exploratory Data Analysis (EDA), Feature Engineering, Feature Selection, and Model Tuning over 16 distinct phases.
 

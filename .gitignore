@@ -1,6 +1,7 @@
 data/
 notebook/
 cancer_eda_venv/
+cancer_eda/
 __pycache__/
 train/
 outputs/models/

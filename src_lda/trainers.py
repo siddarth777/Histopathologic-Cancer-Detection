@@ -29,17 +29,17 @@ def _reshape_binary_labels(labels: torch.Tensor) -> torch.Tensor:
     return labels.reshape(labels.size(0), -1)
 
 
-def run_image_epoch(rank, model, loader, criterion, optimizer, scaler, phase, epoch):
+def run_image_epoch(model, loader, criterion, optimizer, scaler, phase, epoch, device):
     model.train() if phase == 'train' else model.eval()
     total_loss, all_labels, all_probs = 0.0, [], []
     t0 = time.time()
 
-    pbar = tqdm(loader, desc=f'{phase.upper()} Epoch {epoch}', dynamic_ncols=True, leave=False) if rank == 0 else loader
+    pbar = tqdm(loader, desc=f'{phase.upper()} Epoch {epoch}', dynamic_ncols=True, leave=False)
     ctx = torch.enable_grad() if phase == 'train' else torch.no_grad()
     with ctx:
         for imgs, labels, _ in pbar:
-            imgs = imgs.to(rank, non_blocking=True)
-            labels = _reshape_binary_labels(labels).to(rank, non_blocking=True)
+            imgs = imgs.to(device, non_blocking=True)
+            labels = _reshape_binary_labels(labels).to(device, non_blocking=True)
 
             with autocast(enabled=CFG['amp']):
                 logits = model(imgs)
@@ -58,30 +58,29 @@ def run_image_epoch(rank, model, loader, criterion, optimizer, scaler, phase, ep
             all_probs.extend(probs.detach().cpu().numpy().tolist())
             all_labels.extend(labels.squeeze(1).detach().cpu().numpy().tolist())
 
-            if rank == 0:
-                pbar.set_postfix({'loss': f'{loss.item():.4f}'})
+            pbar.set_postfix({'loss': f'{loss.item():.4f}'})
 
     elapsed = time.time() - t0
     n = max(1, len(all_labels))
-    return {
-        'loss': total_loss / n,
-        'elapsed_s': elapsed,
-        'labels': all_labels,
-        'probs': all_probs,
-    }
+    metrics = binary_metrics(all_labels, all_probs)
+    metrics['loss'] = total_loss / n
+    metrics['elapsed_s'] = elapsed
+    metrics['labels'] = all_labels
+    metrics['probs'] = all_probs
+    return metrics
 
 
-def run_feature_epoch(rank, model, loader, criterion, optimizer, scaler, phase, epoch):
+def run_feature_epoch(model, loader, criterion, optimizer, scaler, phase, epoch, device):
     model.train() if phase == 'train' else model.eval()
     total_loss, all_labels, all_probs = 0.0, [], []
     t0 = time.time()
 
-    pbar = tqdm(loader, desc=f'{phase.upper()} Epoch {epoch}', dynamic_ncols=True, leave=False) if rank == 0 else loader
+    pbar = tqdm(loader, desc=f'{phase.upper()} Epoch {epoch}', dynamic_ncols=True, leave=False)
     ctx = torch.enable_grad() if phase == 'train' else torch.no_grad()
     with ctx:
         for feats, labels in pbar:
-            feats = feats.to(rank, non_blocking=True)
-            labels = _reshape_binary_labels(labels).to(rank, non_blocking=True)
+            feats = feats.to(device, non_blocking=True)
+            labels = _reshape_binary_labels(labels).to(device, non_blocking=True)
 
             with autocast(enabled=CFG['amp']):
                 logits = model(feats)
@@ -100,11 +99,13 @@ def run_feature_epoch(rank, model, loader, criterion, optimizer, scaler, phase, 
             all_probs.extend(probs.detach().cpu().numpy().tolist())
             all_labels.extend(labels.squeeze(1).detach().cpu().numpy().tolist())
 
+            pbar.set_postfix({'loss': f'{loss.item():.4f}'})
+
     elapsed = time.time() - t0
     n = max(1, len(all_labels))
-    return {
-        'loss': total_loss / n,
-        'elapsed_s': elapsed,
-        'labels': all_labels,
-        'probs': all_probs,
-    }
+    metrics = binary_metrics(all_labels, all_probs)
+    metrics['loss'] = total_loss / n
+    metrics['elapsed_s'] = elapsed
+    metrics['labels'] = all_labels
+    metrics['probs'] = all_probs
+    return metrics

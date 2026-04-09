@@ -1,6 +1,0 @@
-trial,value,params,checkpoint_path
-4,0.9744397804893541,"{'lr': 0.0005877323043393512, 'weight_decay': 1.3983416303642164e-06, 'optimizer': 'adamw'}",outputs/optuna/cnn/trial_0004/cnn_best.pth
-2,0.9733437577894065,"{'lr': 0.0009438210424100977, 'weight_decay': 0.0014898980618547853, 'optimizer': 'adamw'}",outputs/optuna/cnn/trial_0002/cnn_best.pth
-1,0.9728164333459715,"{'lr': 0.00027223853901998956, 'weight_decay': 9.110343330237822e-05, 'optimizer': 'adamw'}",outputs/optuna/cnn/trial_0001/cnn_best.pth
-0,0.9708754099683575,"{'lr': 0.008734266428437547, 'weight_decay': 0.00021651110187582368, 'optimizer': 'adamw'}",outputs/optuna/cnn/trial_0000/cnn_best.pth
-5,0.951185631277875,"{'lr': 0.0020768531890529526, 'weight_decay': 0.0007787530492758698, 'optimizer': 'sgd', 'sgd_momentum': 0.9288440763437832}",outputs/optuna/cnn/trial_0005/cnn_best.pth

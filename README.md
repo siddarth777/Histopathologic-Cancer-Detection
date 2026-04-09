@@ -6,13 +6,13 @@ A deep learning project for detecting metastatic cancer in histopathologic scans
 
 ```
 Histopathologic-Cancer-Detection/
-├── src/                    # Source code
-├── src_lda/                # Distributed LDA / CNN+MLP experiment scripts
-├── data/                  # Raw dataset
-├── csv/                   # CSV files and logs
-├── plots/                 # Training plots
-├── logs/                  # Training logs
-├── outputs/               # Model outputs
+├── src/                    # Source code (models, data, utilities)
+├── src_lda/                # LDA / CNN+MLP experiment scripts (single-GPU)
+├── src_optuna/             # Hyperparameter tuning with Optuna
+├── csv/                    # CSV files and training logs
+├── plots/                  # Training plots and visualizations
+├── scripts/                # Utility scripts (e.g., gradcam_cnn.py)
+├── outputs/                # Model outputs and results
 └── README.md
 ```
 
@@ -39,92 +39,79 @@ kagglehub download dataset histopathologic-cancer-detection
 unzip histopathologic-cancer-detection.zip -d data/
 ```
 
-### 3. Run the Project
+### 3. Run LDA Experiments
 ```bash
-# Run exploratory data analysis
-python -m src.eda
+# Task 2: LDA on backbone features (all model variants)
+python -m src_lda.task2_lda --data-dir data --out-dir outputs
 
-# Train all models
-python -m src.training
+# Task 3: Regularized LDA on backbone features (all model variants)
+python -m src_lda.task3_reglda --data-dir data --out-dir outputs
 
-# Generate summary report
-python -m src.summary
+# Run both tasks sequentially
+python -m src_lda.run_all --task all --data-dir data --out-dir outputs
 ```
 
-### 4. Run the Distributed LDA Scripts
+### 4. Hyperparameter Tuning with Optuna
 ```bash
-# Task 1: Raw Image -> CNN feature vector -> MLP -> class prediction
-python -m src_lda.task1 --world-size 2
+# Tune all models (default: 20 trials, 2 jobs in parallel)
+python -m src_optuna --data-dir data --out-dir outputs --n-trials 20
 
-# Task 2: LDA on backbone features, then run the same model sweep
-python -m src_lda.task2_lda --world-size 2
+# Tune a single model
+python -m src_optuna --model resnet50 --data-dir data --out-dir outputs --n-trials 20
 
-# Task 3: Regularized LDA (shrinkage=auto), then run the same model sweep
-python -m src_lda.task3_reglda --world-size 2
+# Custom configuration (50 trials, timeout 120 mins, 3 epochs per trial)
+python -m src_optuna --n-trials 50 --timeout-minutes 120 --epochs 3 --data-dir data --out-dir outputs
 
-# Combined runner
-python -m src_lda.run_all --task all --world-size 2
+# Recover best params from completed trials
+python src_optuna/rebuild_best_params.py --optuna-dir outputs/optuna --force
+```
+
+**Optuna Output Structure:**
+```
+outputs/optuna/<model>/
+├── trials.csv              # All trials with metrics
+├── top_trials.csv          # Top 5 trials
+├── best_params.json        # Best hyperparameters + best metrics
+└── trial_XXXX/             # Individual trial folders
+    ├── log.csv             # Trial training logs
+    └── <model>_best.pth    # Best checkpoint for that trial
 ```
 
 ## Test Commands
 
-### Data Validation
-```bash
-# Check if data directory exists
-python -c "import os; print(f'Data directory exists: {os.path.exists(\'data\') and os.path.isdir(\'data\')}')"
-
-# Check if CSV files are generated
-python -c "import os; print(f'CSV files exist: {len([f for f in os.listdir(\'csv\') if f.endswith(\'.csv\')])} files found')"
-
-# Check if plot directory has images
-python -c "import os; print(f'Plot files exist: {len([f for f in os.listdir(\'plots\') if f.endswith(\'.png\')])} files found')"
-
-# Check if logs are generated
-python -c "import os; print(f'Log files exist: {len([f for f in os.listdir(\'logs\') if f.endswith(\'.log\')])} files found')"
-```
-
-### Model Testing
-```bash
-# Test individual models
-python -m src.training --model cnn
-python -m src.training --model alexnet
-python -m src.training --model resnet50
-python -m src.training --model vgg16
-
-# Distributed LDA tracks
-python -m src_lda.task2_lda --model cnn --world-size 2
-python -m src_lda.task3_reglda --model resnet50 --world-size 2
-
-# Test with different configurations
-python -m src.training --epochs 1 --batch_size 32
-python -m src.training --seed 123
-```
-
-### Error Checking
-```bash
-# Check for syntax errors in all Python files
-python -m py_compile src/*.py
-python -m py_compile src/*/*.py
-
-# Run flake8 for code style
-flake8 src/ --max-line-length=120
-
-# Run mypy for type checking
-mypy src/ --ignore-missing-imports
-
-# Run pytest for unit tests (if tests exist)
-pytest tests/ -v
-```
-
-### Performance Testing
+### Environment Validation
 ```bash
 # Check GPU availability
 python -c "import torch; print(f'GPU available: {torch.cuda.is_available()}')"
 
-# Profile training time
-python -m src.training --epochs 1 --profile
+# Check output directories
+python -c "import os; dirs = ['csv', 'plots', 'outputs']; print('\n'.join([f'{d}: {os.path.exists(d)}' for d in dirs]))"
 ```
 
+### Quick LDA Task Test
+```bash
+# Test Task 2 with a single model
+python -m src_lda.task2_lda --model cnn --data-dir data --out-dir outputs/test
+
+# Test Task 3 with a single model
+python -m src_lda.task3_reglda --model resnet50 --data-dir data --out-dir outputs/test
+```
+
+### Quick Optuna Test
+```bash
+# Test single-model tuning with 2 trials
+python -m src_optuna --model cnn --n-trials 2 --data-dir data --out-dir outputs/test
+```
+
+### Code Quality
+```bash
+# Check for syntax errors
+python -m py_compile src_lda/*.py
+python -m py_compile src_optuna/*.py
+
+# Check with flake8 (if installed)
+flake8 src_lda/ --max-line-length=120
+flake8 src_optuna/ --max-line-length=120
 ## Data Structure
 
 The dataset contains:
@@ -142,18 +129,27 @@ This project trains and evaluates the following models:
 - ResNet50
 - VGG16
 
-The src_lda package adds distributed-only variants for the same backbone sweep, plus a CNN + MLP pipeline and two transform tracks:
-- Task 1: CNN feature vector + MLP head
-- Task 2: LDA over backbone features
-- Task 3: Regularized LDA over backbone features
+The src_lda package provides two LDA-based training pipelines for single-GPU setups:
+- **Task 2: LDA** — Extract backbone features → LDA projection → train MLP head
+- **Task 3: Regularized LDA** — Same as Task 2 but with automatic shrinkage estimation
 
-## Output
+Both tasks sweep across all models: CNN, AlexNet, ResNet50, and VGG16.
 
-Training outputs are saved in:
-- `csv/`: Training metrics and logs
-- `plots/`: Training curves and visualizations
-- `logs/`: Detailed training logs
-- `outputs/`: Model predictions and saved models
+The src_optuna package provides Optuna-based hyperparameter tuning for all models, searching over:
+- Learning rate (log-scale: 1e-5 to 1e-2)
+- Weight decay (log-scale: 1e-6 to 1e-2)
+- Optimizer (AdamW or SGD with conditional momentum)
+
+Results include trial metrics, top-5 trials ranking, and best hyperparameters with validation performance.
+
+## Output Structure
+
+Training outputs are organized in `outputs/`:
+- `outputs/optuna/<model>/` — Optuna tuning results (trials, best params, checkpoints)
+- `outputs/eda/` — Exploratory data analysis plots
+- `outputs/` — Task 2 and Task 3 logs and checkpoints (by default)
+
+CSV logs are saved in `csv/` and plots in `plots/`
 
 ## License
 

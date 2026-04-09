@@ -1,4 +1,0 @@
-Version,Accuracy,AUC-ROC,F1
-Original (all features),0.808,0.885996,0.8020618556701031
-Selected features,0.819,0.910958,0.8158697863682605
-Tuned Random Forest,0.819,0.91195,0.8154943934760448

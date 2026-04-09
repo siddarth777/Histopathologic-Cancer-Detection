@@ -22,8 +22,8 @@ try:
     from .config import CFG
     from .utils import load_train_dataframe
 except ImportError:
-    from src_optuna.config import CFG
-    from src_optuna.utils import load_train_dataframe
+    from DL_exp.src_optuna.config import CFG
+    from DL_exp.src_optuna.utils import load_train_dataframe
 
 
 def _safe_float(value: Any) -> float | None:

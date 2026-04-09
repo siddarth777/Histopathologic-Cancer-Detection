@@ -5,3 +5,4 @@ __pycache__/
 train/
 outputs/models/
 train_labels.csv
+.venv

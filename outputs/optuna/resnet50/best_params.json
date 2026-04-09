@@ -10,14 +10,14 @@
       "tp": 24005
     },
     "epoch": 5,
-    "val_acc": 0.9170403587443946,
-    "val_auc": 0.9694136155598644,
-    "val_f1": 0.8976218965001496,
+    "val_acc": 0.9417040358744395,
+    "val_auc": 0.9814747632333438,
+    "val_f1": 0.9253279515640767,
     "val_precision": 0.8972825477516541,
     "val_recall": 0.8978866654198616
   },
   "best_trial": 2,
-  "best_value": 0.9694136155598644,
+  "best_value": 0.9814747632333438,
   "checkpoint_path": "outputs/optuna/resnet50/trial_0002/resnet50_best.pth",
   "direction": "StudyDirection.MAXIMIZE",
   "model_name": "resnet50",

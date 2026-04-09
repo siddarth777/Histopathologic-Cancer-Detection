@@ -7,10 +7,10 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 
-from texture_analysis import extract_glcm_features, extract_lbp_features
-from morphological_analysis import laplacian_variance, edge_density
-from config import PLOT_DIR, REPORT_DIR
-from batch_utils import iter_dataframe_batches
+from EDA.eda.src.texture_analysis import extract_glcm_features, extract_lbp_features
+from EDA.eda.src.morphological_analysis import laplacian_variance, edge_density
+from EDA.eda.src.config import PLOT_DIR, REPORT_DIR
+from EDA.eda.src.batch_utils import iter_dataframe_batches
 
 
 def _lbp_entropy(hist):

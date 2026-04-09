@@ -1,11 +1,11 @@
-import data_loading
-import eda_visualization
-import pixel_stats
-import color_analysis
-import texture_analysis
-import morphological_analysis
-import dimensionality_reduction
-import kl_divergence_analysis
+import EDA.eda.src.data_loading as data_loading
+import EDA.eda.src.eda_visualization as eda_visualization
+import EDA.eda.src.pixel_stats as pixel_stats
+import EDA.eda.src.color_analysis as color_analysis
+import EDA.eda.src.texture_analysis as texture_analysis
+import EDA.eda.src.morphological_analysis as morphological_analysis
+import EDA.eda.src.dimensionality_reduction as dimensionality_reduction
+import EDA.eda.src.kl_divergence_analysis as kl_divergence_analysis
 
 
 def run_eda(batch_size=1024):

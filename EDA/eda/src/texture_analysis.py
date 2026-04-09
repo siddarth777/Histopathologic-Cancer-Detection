@@ -8,8 +8,8 @@ from tqdm import tqdm
 from skimage import color as skcolor
 from skimage.feature import local_binary_pattern
 from skimage.feature import graycomatrix, graycoprops
-from config import PLOT_DIR, SEED
-from batch_utils import iter_dataframe_batches
+from EDA.eda.src.config import PLOT_DIR, SEED
+from EDA.eda.src.batch_utils import iter_dataframe_batches
 
 def extract_glcm_features(img_array):
     gray = (skcolor.rgb2gray(img_array) * 255).astype(np.uint8)

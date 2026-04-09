@@ -73,26 +73,6 @@ def _extract_feature_row(img):
     return row
 
 
-def _feature_category(feature_name):
-    if feature_name in {
-        "R_mean", "G_mean", "B_mean", "R_std", "G_std", "B_std",
-    }:
-        return "RGB"
-    if feature_name in {
-        "H_mean", "S_mean", "V_mean",
-    }:
-        return "HSV"
-    if feature_name in {
-        "L_mean", "A_mean", "B_lab_mean",
-    }:
-        return "LAB"
-    if feature_name.startswith("GLCM_"):
-        return "GLCM"
-    if feature_name.startswith("LBP_"):
-        return "LBP"
-    return "Morpho"
-
-
 def generate_kl_reports(df, loader, track_name, batch_size=1024):
     records = []
     labels = []
@@ -115,56 +95,13 @@ def generate_kl_reports(df, loader, track_name, batch_size=1024):
     kl_df = pd.DataFrame(kl_rows).sort_values("KL_Divergence", ascending=False).reset_index(drop=True)
     kl_df.to_csv(f"{REPORT_DIR}kl_divergence_{track_name}.csv", index=False)
 
-    fig, ax = plt.subplots(figsize=(10, 12))
+    fig, ax = plt.subplots(figsize=(10, max(6, len(kl_df) * 0.35)))
     ax.barh(kl_df["Feature"], kl_df["KL_Divergence"], color="#2A9D8F")
     ax.invert_yaxis()
     ax.set_xlabel("Symmetric KL Divergence")
-    ax.set_title(f"KL Divergence by Feature - {track_name}")
+    ax.set_title(f"13 — Symmetric KL Divergence (Individual Metrics, Decreasing) — {track_name}")
     plt.tight_layout()
     plt.savefig(f"{PLOT_DIR}13_kl_divergence_{track_name}.png", dpi=150, bbox_inches="tight")
     plt.close()
-
-    cat_df = kl_df.copy()
-    cat_df["Category"] = cat_df["Feature"].map(_feature_category)
-    by_cat = (
-        cat_df.groupby("Category", as_index=False)["KL_Divergence"]
-        .agg(["mean", "median"])
-        .reset_index()
-        .rename(columns={"mean": "Mean_KL", "median": "Median_KL"})
-    )
-
-    category_order = ["RGB", "HSV", "LAB", "GLCM", "LBP", "Morpho"]
-    by_cat["Category"] = pd.Categorical(by_cat["Category"], categories=category_order, ordered=True)
-    by_cat = by_cat.sort_values("Category")
-
-    fig, ax = plt.subplots(figsize=(9, 4.5))
-    x = np.arange(len(by_cat))
-    width = 0.35
-    bars_mean = ax.bar(x - width / 2, by_cat["Mean_KL"], width, label="Mean", color="#2A9D8F")
-    bars_median = ax.bar(x + width / 2, by_cat["Median_KL"], width, label="Median", color="#E76F51")
-    ax.set_xticks(x)
-    ax.set_xticklabels(by_cat["Category"])
-    ax.set_ylabel("KL Divergence")
-    ax.set_title(f"KL Divergence by Feature Category - {track_name}")
-    ax.legend()
-
-    for bars in [bars_mean, bars_median]:
-        for bar in bars:
-            height = bar.get_height()
-            ax.annotate(
-                f"{height:.4f}",
-                xy=(bar.get_x() + bar.get_width() / 2, height),
-                xytext=(0, 3),
-                textcoords="offset points",
-                ha="center",
-                va="bottom",
-                fontsize=9,
-            )
-
-    plt.tight_layout()
-    plt.savefig(f"{PLOT_DIR}13_kl_by_category_{track_name}.png", dpi=150, bbox_inches="tight")
-    plt.close()
-
-    by_cat.to_csv(f"{REPORT_DIR}kl_by_category_{track_name}.csv", index=False)
 
     return kl_df

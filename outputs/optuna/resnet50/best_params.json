@@ -1,0 +1,31 @@
+{
+  "best_run_stats": {
+    "confusion_matrix_sample_counts": {
+      "fn": 2730,
+      "fp": 2748,
+      "support_negative": 39273,
+      "support_positive": 26735,
+      "tn": 36525,
+      "total": 66008,
+      "tp": 24005
+    },
+    "epoch": 5,
+    "val_acc": 0.9170403587443946,
+    "val_auc": 0.9694136155598644,
+    "val_f1": 0.8976218965001496,
+    "val_precision": 0.8972825477516541,
+    "val_recall": 0.8978866654198616
+  },
+  "best_trial": 2,
+  "best_value": 0.9694136155598644,
+  "checkpoint_path": "outputs/optuna/resnet50/trial_0002/resnet50_best.pth",
+  "direction": "StudyDirection.MAXIMIZE",
+  "model_name": "resnet50",
+  "params": {
+    "lr": 0.0020771673325561874,
+    "optimizer": "adamw",
+    "sgd_momentum": 0.9,
+    "weight_decay": 0.0014827491776035805
+  },
+  "trial_dir": "outputs/optuna/resnet50/trial_0002"
+}

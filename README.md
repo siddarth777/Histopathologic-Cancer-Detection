@@ -7,6 +7,7 @@ A deep learning project for detecting metastatic cancer in histopathologic scans
 ```
 Histopathologic-Cancer-Detection/
 ├── src/                    # Source code
+├── src_lda/                # Distributed LDA / CNN+MLP experiment scripts
 ├── data/                  # Raw dataset
 ├── csv/                   # CSV files and logs
 ├── plots/                 # Training plots
@@ -19,7 +20,8 @@ Histopathologic-Cancer-Detection/
 
 ### 1. Install Dependencies
 ```bash
-pip install -r requirements.txt
+source .venv/bin/activate
+uv pip install torch torchvision pandas scikit-learn scipy matplotlib seaborn tqdm pillow
 ```
 
 ### 2. Download Data from Kaggle
@@ -49,6 +51,21 @@ python -m src.training
 python -m src.summary
 ```
 
+### 4. Run the Distributed LDA Scripts
+```bash
+# Task 1: Raw Image -> CNN feature vector -> MLP -> class prediction
+python -m src_lda.task1 --world-size 2
+
+# Task 2: LDA on backbone features, then run the same model sweep
+python -m src_lda.task2_lda --world-size 2
+
+# Task 3: Regularized LDA (shrinkage=auto), then run the same model sweep
+python -m src_lda.task3_reglda --world-size 2
+
+# Combined runner
+python -m src_lda.run_all --task all --world-size 2
+```
+
 ## Test Commands
 
 ### Data Validation
@@ -73,6 +90,10 @@ python -m src.training --model cnn
 python -m src.training --model alexnet
 python -m src.training --model resnet50
 python -m src.training --model vgg16
+
+# Distributed LDA tracks
+python -m src_lda.task2_lda --model cnn --world-size 2
+python -m src_lda.task3_reglda --model resnet50 --world-size 2
 
 # Test with different configurations
 python -m src.training --epochs 1 --batch_size 32
@@ -120,6 +141,11 @@ This project trains and evaluates the following models:
 - AlexNet
 - ResNet50
 - VGG16
+
+The src_lda package adds distributed-only variants for the same backbone sweep, plus a CNN + MLP pipeline and two transform tracks:
+- Task 1: CNN feature vector + MLP head
+- Task 2: LDA over backbone features
+- Task 3: Regularized LDA over backbone features
 
 ## Output
 

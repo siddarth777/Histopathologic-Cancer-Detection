@@ -1,0 +1,31 @@
+{
+  "best_run_stats": {
+    "confusion_matrix_sample_counts": {
+      "fn": 2399,
+      "fp": 2812,
+      "support_negative": 39273,
+      "support_positive": 26735,
+      "tn": 36461,
+      "total": 66008,
+      "tp": 24336
+    },
+    "epoch": 5,
+    "val_acc": 0.9210398739546721,
+    "val_auc": 0.9739662021920177,
+    "val_f1": 0.9032736990572341,
+    "val_precision": 0.8964196257551201,
+    "val_recall": 0.9102674396858051
+  },
+  "best_trial": 3,
+  "best_value": 0.9739662021920177,
+  "checkpoint_path": "outputs/optuna/vgg16/trial_0003/vgg16_best.pth",
+  "direction": "StudyDirection.MAXIMIZE",
+  "model_name": "vgg16",
+  "params": {
+    "lr": 0.007789916868859709,
+    "optimizer": "sgd",
+    "sgd_momentum": 0.9278324441976565,
+    "weight_decay": 3.4651258803920945e-06
+  },
+  "trial_dir": "outputs/optuna/vgg16/trial_0003"
+}

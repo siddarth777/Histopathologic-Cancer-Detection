@@ -1,0 +1,31 @@
+{
+  "best_run_stats": {
+    "confusion_matrix_sample_counts": {
+      "fn": 4003,
+      "fp": 3542,
+      "support_negative": 39273,
+      "support_positive": 26735,
+      "tn": 35731,
+      "total": 66008,
+      "tp": 22732
+    },
+    "epoch": 5,
+    "val_acc": 0.8857259726093807,
+    "val_auc": 0.9516641445079355,
+    "val_f1": 0.8576926705027828,
+    "val_precision": 0.8651899215954937,
+    "val_recall": 0.8502711801009912
+  },
+  "best_trial": 9,
+  "best_value": 0.9516641445079355,
+  "checkpoint_path": "outputs/optuna/alexnet/trial_0009/alexnet_best.pth",
+  "direction": "StudyDirection.MAXIMIZE",
+  "model_name": "alexnet",
+  "params": {
+    "lr": 8.876515754676591e-05,
+    "optimizer": "adamw",
+    "sgd_momentum": 0.9,
+    "weight_decay": 1.2096251984073954e-05
+  },
+  "trial_dir": "outputs/optuna/alexnet/trial_0009"
+}

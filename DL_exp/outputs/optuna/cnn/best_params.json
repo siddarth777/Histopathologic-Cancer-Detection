@@ -1,0 +1,31 @@
+{
+  "best_run_stats": {
+    "confusion_matrix_sample_counts": {
+      "fn": 3194,
+      "fp": 1784,
+      "support_negative": 39273,
+      "support_positive": 26735,
+      "tn": 37489,
+      "total": 66008,
+      "tp": 23541
+    },
+    "epoch": 5,
+    "val_acc": 0.9245848988001454,
+    "val_auc": 0.9744397804893541,
+    "val_f1": 0.9043832353732089,
+    "val_precision": 0.9295557749259625,
+    "val_recall": 0.8805311389564242
+  },
+  "best_trial": 4,
+  "best_value": 0.9744397804893541,
+  "checkpoint_path": "outputs/optuna/cnn/trial_0004/cnn_best.pth",
+  "direction": "StudyDirection.MAXIMIZE",
+  "model_name": "cnn",
+  "params": {
+    "lr": 0.0005877323043393512,
+    "optimizer": "adamw",
+    "sgd_momentum": 0.9,
+    "weight_decay": 1.3983416303642164e-06
+  },
+  "trial_dir": "outputs/optuna/cnn/trial_0004"
+}

@@ -1,13 +1,14 @@
-# Histopathologic Cancer Detection Experiments
+# ML
 
-This repository contains a classical ML experiment pipeline for histopathologic cancer detection.
+`ML` is the classical machine learning pipeline for tabular feature experiments.
 
-## Project Layout
+## Folder Layout
 
 ```text
-Histopathologic-Cancer-Detection/
-├── main.py                     # Unified experiment runner
-├── run_ensemble_models.py      # Ensemble experiments (RF/XGB/CAT + weighted/stacking)
+ML/
+├── __main__.py
+├── main.py
+├── run_ensemble_models.py
 ├── models/
 │   ├── logistic_regression.py
 │   ├── random_forest.py
@@ -15,110 +16,51 @@ Histopathologic-Cancer-Detection/
 │   ├── xgboost_model.py
 │   └── catboost_model.py
 └── results/
-  ├── results_full96.csv      # Existing benchmark results (used by --run-best)
-  └── results_crop32.csv      # Existing benchmark results (used by --run-best)
+    ├── results_full96.csv
+    └── results_crop32.csv
 ```
 
-## Data Requirements
+## Required Inputs
 
-The scripts expect pre-engineered tabular CSV files with:
+- `--train_path`
+- `--test_path`
+- `--selected_features_path`
 
-- a target column named `label`
-- an optional `id` column
-- feature columns
+The selected-features CSV should contain feature names in its first column.
 
-You need:
+## Run Commands
 
-- train CSV (`--train_path`)
-- test CSV (`--test_path`)
-- selected-features CSV (`--selected_features_path`)
-
-The selected-features CSV should contain feature names in the first column.
-
-## Install Dependencies
+From repository root:
 
 ```bash
-pip install pandas numpy scikit-learn optuna tqdm xgboost catboost
+python -m ML --run-all --train_path /path/train.csv --test_path /path/test.csv --selected_features_path /path/selected_features.csv
+python -m ML --run-best --results-csv ML/results/results_full96.csv --train_path /path/train.csv --test_path /path/test.csv --selected_features_path /path/selected_features.csv
 ```
 
-## Unified Runner
-
-Use `main.py` as the single entrypoint.
-
-### 1. Run all base experiments
+Equivalent command from inside `ML/`:
 
 ```bash
-python main.py \
-  --run-all \
-  --train_path /path/to/train.csv \
-  --test_path /path/to/test.csv \
-  --selected_features_path /path/to/selected_features.csv \
-  --n-trials 10
+python main.py --run-all --train_path /path/train.csv --test_path /path/test.csv --selected_features_path /path/selected_features.csv
 ```
 
-This runs:
+## Main Flags
 
-- logistic regression
-- random forest
-- naive bayes
-- xgboost
-- catboost
-
-### 2. Run all experiments plus ensemble
-
-```bash
-python main.py \
-  --run-all \
-  --include-ensemble \
-  --train_path /path/to/train.csv \
-  --test_path /path/to/test.csv \
-  --selected_features_path /path/to/selected_features.csv \
-  --n-trials 10 \
-  --n-trials-model 10 \
-  --n-trials-weights 10
-```
-
-### 3. Run only the best model by ROC-AUC
-
-```bash
-python main.py \
-  --run-best \
-  --results-csv results/results_full96.csv \
-  --train_path /path/to/train.csv \
-  --test_path /path/to/test.csv \
-  --selected_features_path /path/to/selected_features.csv \
-  --n-trials 10
-```
-
-`--run-best` reads the `model`, `features`, and `roc_auc` columns from the results CSV and runs the top model.
-
-If the best row is an `ensemble_*` model (for example `ensemble_stacking_lr`), the runner dispatches to `run_ensemble_models.py`.
-
-## Main Arguments
-
-- `--run-all`: run all base model experiments
-- `--run-best`: run only best model according to `roc_auc` from `--results-csv`
-- `--train_path`: path to training CSV (required)
-- `--test_path`: path to test CSV (required)
-- `--selected_features_path`: path to selected-features CSV (required)
-- `--results-csv`: benchmark CSV used by `--run-best` (default: `results/results_full96.csv`)
-- `--n-trials`: Optuna trials for model scripts that tune hyperparameters
-- `--include-ensemble`: include `run_ensemble_models.py` when using `--run-all`
-- `--n-trials-model`: model tuning trials for ensemble script
-- `--n-trials-weights`: weight tuning trials for ensemble script
-- `--ensemble-result-file`: output log file for ensemble run
+- `--run-all`
+- `--run-best`
+- `--train_path`
+- `--test_path`
+- `--selected_features_path`
+- `--results-csv`
+- `--n-trials`
+- `--include-ensemble`
+- `--n-trials-model`
+- `--n-trials-weights`
+- `--ensemble-result-file`
 
 ## Outputs
 
-- Per-model text logs such as:
-  - `results_logistic_regression.txt`
-  - `results_random_forest.txt`
-  - `results_xgboost.txt`
-- Ensemble log file:
-  - `results_ensemble.txt` (or custom path via `--ensemble-result-file`)
+Produces per-model text logs and optional ensemble log output file.
 
-## Notes
+## Related Docs
 
-- `xgboost` and `catboost` must be installed to run those models.
-- `run_ensemble_models.py` writes/reads `checkpoint.json` to resume ensemble modes (`all`, `selected`).
-- When running `run_ensemble_models.py` directly, always pass `--train_path`, `--test_path`, and `--selected_features_path` explicitly.
+- `../README.md`

@@ -5,7 +5,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from EDA.eda.src.eda import run_eda
+from EDA.src.eda import run_eda
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent

@@ -3,8 +3,8 @@ import numpy as np
 from tqdm import tqdm
 from sklearn.model_selection import train_test_split
 
-from EDA.eda.src.texture_analysis import extract_glcm_features, extract_lbp_features
-from EDA.eda.src.config import SEED
+from EDA.src.texture_analysis import extract_glcm_features, extract_lbp_features
+from EDA.src.config import SEED
 
 def build_feature_vector(filepath, loader, pca_model, scaler_model):
     img = loader(filepath)

@@ -6,8 +6,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import seaborn as sns
 from tqdm import tqdm
-from EDA.eda.src.config import PLOT_DIR
-from EDA.eda.src.batch_utils import iter_dataframe_batches
+from EDA.src.config import PLOT_DIR
+from EDA.src.batch_utils import iter_dataframe_batches
 
 def extract_color_features(filepaths, loader_fn):
     records = []

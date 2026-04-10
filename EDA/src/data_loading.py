@@ -3,7 +3,7 @@ import random
 import numpy as np
 import pandas as pd
 from PIL import Image
-from EDA.eda.src.config import TRAIN_DIR, LABELS_CSV, SEED
+from EDA.src.config import TRAIN_DIR, LABELS_CSV, SEED
 
 def set_seed(seed=SEED):
     random.seed(seed)

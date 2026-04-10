@@ -1,13 +1,13 @@
 import argparse
-import EDA.eda.src.data_loading as data_loading
-import EDA.eda.src.eda_visualization as eda_visualization
-import EDA.eda.src.pixel_stats as pixel_stats
-import EDA.eda.src.color_analysis as color_analysis
-import EDA.eda.src.texture_analysis as texture_analysis
-import EDA.eda.src.morphological_analysis as morphological_analysis
-import EDA.eda.src.dimensionality_reduction as dimensionality_reduction
-import EDA.eda.src.kl_divergence_analysis as kl_divergence_analysis
-import EDA.eda.src.edge_density_analysis as edge_density_analysis
+import EDA.src.data_loading as data_loading
+import EDA.src.eda_visualization as eda_visualization
+import EDA.src.pixel_stats as pixel_stats
+import EDA.src.color_analysis as color_analysis
+import EDA.src.texture_analysis as texture_analysis
+import EDA.src.morphological_analysis as morphological_analysis
+import EDA.src.dimensionality_reduction as dimensionality_reduction
+import EDA.src.kl_divergence_analysis as kl_divergence_analysis
+import EDA.src.edge_density_analysis as edge_density_analysis
 
 
 def run_eda(batch_size=1024, sample_n=None):

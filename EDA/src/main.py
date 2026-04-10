@@ -1,4 +1,4 @@
-from eda import run_eda
+from EDA.src.eda import run_eda
 
 def main():
     run_eda()

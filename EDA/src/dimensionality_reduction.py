@@ -8,8 +8,8 @@ from sklearn.decomposition import IncrementalPCA
 from sklearn.preprocessing import StandardScaler
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
-from EDA.eda.src.config import PLOT_DIR, SEED
-from EDA.eda.src.batch_utils import iter_dataframe_batches
+from EDA.src.config import PLOT_DIR, SEED
+from EDA.src.batch_utils import iter_dataframe_batches
 
 def run_pca_analysis(df, loader, track_name, n_components=100, batch_size=1024):
     print(f"\n[PCA] Loading images for {track_name}...")

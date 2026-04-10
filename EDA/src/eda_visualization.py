@@ -1,7 +1,7 @@
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from EDA.eda.src.config import PLOT_DIR, SEED
+from EDA.src.config import PLOT_DIR, SEED
 
 def plot_class_distribution(df):
     fig, axes = plt.subplots(1, 2, figsize=(12, 4))

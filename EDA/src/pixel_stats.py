@@ -3,8 +3,8 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from tqdm import tqdm
-from EDA.eda.src.config import PLOT_DIR
-from EDA.eda.src.batch_utils import iter_dataframe_batches
+from EDA.src.config import PLOT_DIR
+from EDA.src.batch_utils import iter_dataframe_batches
 
 def compute_channel_stats(filepaths, loader_fn):
     means, stds = [], []

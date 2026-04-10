@@ -8,9 +8,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from tqdm import tqdm
 
-from EDA.eda.src.morphological_analysis import edge_density
-from EDA.eda.src.config import PLOT_DIR, REPORT_DIR
-from EDA.eda.src.batch_utils import iter_dataframe_batches
+from EDA.src.morphological_analysis import edge_density
+from EDA.src.config import PLOT_DIR, REPORT_DIR
+from EDA.src.batch_utils import iter_dataframe_batches
 
 
 def plot_edge_density_comparison(ed_df, track_name, out_dir=None):

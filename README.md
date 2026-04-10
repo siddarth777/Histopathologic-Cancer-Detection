@@ -82,7 +82,7 @@ python -m ML --run-best --results-csv ML/results/results_full96.csv --train_path
 
 ## Environment
 
-This repository is configured with `pyproject.toml` and `uv.lock`. A typical setup is:
+This repository is configured with `pyproject.toml`. A typical setup is:
 
 ```bash
 uv sync

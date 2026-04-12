@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import torchvision.models as tv_models
 
-from src.models import BaseCNN
+from .models import BaseCNN
 
 
 class BaseCNNBackbone(nn.Module):

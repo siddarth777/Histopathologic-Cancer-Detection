@@ -11,9 +11,10 @@ from sklearn.metrics import f1_score, roc_auc_score
 from torch.cuda.amp import GradScaler, autocast
 from torch.utils.data import DataLoader
 
-from src.data import CancerDataset
-from src.logging_utils import Logger
-from src.models import get_model
+from ..src_lda.data import CancerDataset
+from ..src_lda.logging_utils import Logger
+
+from .models import get_model
 
 from .utils import cleanup_cuda, get_device, trial_dir
 

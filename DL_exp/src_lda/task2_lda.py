@@ -11,9 +11,9 @@ import torch.optim as optim
 from torch.cuda.amp import GradScaler
 from torch.utils.data import DataLoader
 
-from src.logging_utils import Logger
-from src.plotting import plot_training_curves, plot_confusion_and_roc
-from src.utils import seed_everything
+from .logging_utils import Logger
+from .plotting import plot_training_curves, plot_confusion_and_roc
+from .utils import seed_everything
 
 from .config import CFG
 from .data import build_image_datasets, make_feature_loader

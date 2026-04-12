@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from src.config import CFG as BASE_CFG
+from ..src_lda.config import CFG as BASE_CFG
 
 CFG = {
     **BASE_CFG,

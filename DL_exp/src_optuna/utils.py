@@ -9,7 +9,7 @@ import pandas as pd
 import torch
 from sklearn.model_selection import train_test_split
 
-from src.utils import seed_everything
+from ..src_lda.utils import seed_everything
 
 
 def load_train_dataframe(data_dir: str, seed: int, val_split: float):

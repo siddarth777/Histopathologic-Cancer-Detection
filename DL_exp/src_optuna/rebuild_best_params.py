@@ -11,17 +11,18 @@ from typing import Any
 import torch
 from sklearn.metrics import confusion_matrix, precision_score, recall_score
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.data import CancerDataset
-from src.models import get_model
-
 try:
+    from ..src_lda.data import CancerDataset
+    from .models import get_model
     from .config import CFG
     from .utils import load_train_dataframe
 except ImportError:
+    from DL_exp.src_lda.data import CancerDataset
+    from DL_exp.src_optuna.models import get_model
     from DL_exp.src_optuna.config import CFG
     from DL_exp.src_optuna.utils import load_train_dataframe
 

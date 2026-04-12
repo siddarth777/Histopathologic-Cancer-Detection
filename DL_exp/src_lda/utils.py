@@ -2,12 +2,26 @@ from __future__ import annotations
 
 import json
 import os
+import random
 from dataclasses import dataclass
 
+import numpy as np
 import pandas as pd
+import torch
 from sklearn.model_selection import train_test_split
 
 from .config import CFG
+
+
+def seed_everything(seed: int) -> None:
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed(seed)
+        torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
 
 
 def ensure_dirs(*paths: str) -> None:

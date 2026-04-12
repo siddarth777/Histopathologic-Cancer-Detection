@@ -49,7 +49,11 @@ Notes:
 - `train_labels.csv` must include at least `id` and `label` columns.
 - `data/train/` must contain image files matching the `id` values (for example `<id>.tif`).
 - A `data/test/` folder is not required for the current DL and EDA workflows in this repository.
-
+Download dataset from
+-https://www.kaggle.com/competitions/histopathologic-cancer-detection/data?select=train
+and featuee extracted dataset from
+-https://drive.google.com/drive/folders/15_sl_u_LarPHjbz1vFc27FBD6rL23tYd?usp=sharing
+or execute feature_extraction.py in ml folder
 ### ML tabular data
 
 Place your ML CSV files in these folders:

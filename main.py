@@ -1,10 +1,9 @@
 
 import argparse
+import os
 import subprocess
 import sys
 from pathlib import Path
-
-from EDA.src.eda import run_eda
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent
@@ -34,6 +33,10 @@ def main() -> None:
 		parser.error('Specify at least one of --eda, --dl-lda, or --dl-optuna')
 
 	if args.eda:
+		# Pass EDA path overrides through env before importing EDA modules.
+		os.environ['EDA_DATA_DIR'] = str((PROJECT_ROOT / args.data_dir).resolve())
+		os.environ['EDA_OUTPUT_DIR'] = str((PROJECT_ROOT / args.out_dir).resolve())
+		from EDA.src.eda import run_eda
 		run_eda(batch_size=args.eda_batch_size)
 
 	if args.dl_lda:

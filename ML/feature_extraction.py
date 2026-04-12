@@ -5,17 +5,12 @@ from PIL import Image
 from tqdm import tqdm
 import cv2
 from skimage import color as skcolor
-from skimage.feature import local_binary_pattern
-try:
-    from skimage.feature import graycomatrix, graycoprops
-except ImportError:
-    from skimage.feature import greycomatrix as graycomatrix, greycoprops as graycoprops
+from skimage.feature import graycomatrix, graycoprops, local_binary_pattern
 
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 import joblib
-
 warnings.filterwarnings("ignore")
 SEED = 42
 random.seed(SEED)

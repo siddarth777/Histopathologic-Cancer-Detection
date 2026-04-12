@@ -62,8 +62,8 @@ ML/
 │   ├── crop32_train.csv
 │   └── crop32_test.csv
 └── results/
-	├── results_full96.csv
-	└── results_crop32.csv
+    ├── results_full96.csv
+    └── results_crop32.csv
 ```
 
 Use selected-features files from:
@@ -81,6 +81,13 @@ ML runner expects:
 - A selected-features CSV via `--selected_features_path` (first column = feature names).
 
 You can store these CSVs anywhere and pass absolute or relative paths.
+
+Recommended starter set for the commands below:
+
+- `ML/datasets/full96_train.csv`
+- `ML/datasets/full96_test.csv`
+- `EDA/outputs/reports/selected_features_Full96.csv`
+- `ML/results/results_full96.csv` (needed for `--run-best`)
 
 ## Top-Level Dispatcher
 
@@ -136,24 +143,31 @@ DL module flags:
 
 The classical ML pipeline is run from `ML/`:
 
+Verified working commands from repository root:
+
 ```bash
 python -m ML.main --run-all --train_path ML/datasets/full96_train.csv --test_path ML/datasets/full96_test.csv --selected_features_path EDA/outputs/reports/selected_features_Full96.csv
 python -m ML.main --run-best --results-csv ML/results/results_full96.csv --train_path ML/datasets/full96_train.csv --test_path ML/datasets/full96_test.csv --selected_features_path EDA/outputs/reports/selected_features_Full96.csv
 ```
 
+What these commands do:
+
+- First command (`--run-all`): runs all base ML models (and ensemble only if you also pass `--include-ensemble`).
+- Second command (`--run-best`): reads `ML/results/results_full96.csv`, picks the row with highest `roc_auc`, then runs only that model.
+
 ML flags:
 
-- `--run-all`: run all base models; optional ensemble if `--include-ensemble` is set.
-- `--run-best`: run only the best model selected from `--results-csv` by highest `roc_auc`.
-- `--train_path`: training tabular CSV path.
-- `--test_path`: testing/holdout tabular CSV path.
-- `--selected_features_path`: CSV whose first column lists selected feature names.
-- `--results-csv`: summary CSV used to choose best model in `--run-best` mode.
-- `--n-trials`: Optuna trials for single-model scripts.
-- `--include-ensemble`: include ensemble runner when using `--run-all`.
+- `--run-all`: execute logistic regression, random forest, naive Bayes, XGBoost, CatBoost.
+- `--run-best`: execute only one model selected from `--results-csv`.
+- `--train_path`: path to training feature CSV (must include `label`).
+- `--test_path`: path to holdout/test feature CSV (must include `label`).
+- `--selected_features_path`: path to selected-features CSV (feature names in first column).
+- `--results-csv`: summary CSV used only with `--run-best`; must include `model`, `features`, `roc_auc`.
+- `--n-trials`: Optuna trial count for single-model scripts.
+- `--include-ensemble`: include `ML/run_ensemble_models.py` when using `--run-all`.
 - `--n-trials-model`: Optuna trials for each ensemble base learner.
 - `--n-trials-weights`: Optuna trials for ensemble weight tuning.
-- `--ensemble-result-file`: output text file name for ensemble metrics.
+- `--ensemble-result-file`: output text file for ensemble metrics.
 
 ## Environment
 

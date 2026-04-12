@@ -15,7 +15,7 @@ from catboost import CatBoostClassifier
 parser = argparse.ArgumentParser(description="Ensemble Pipeline")
 parser.add_argument("--train_path")
 parser.add_argument("--test_path")
-parser.add_argument("--selected_features_path", default="/data-saturn/AudioBench/prml/prml_data/selected_features_Full96.csv")
+parser.add_argument("--selected_features_path", default="")
 parser.add_argument("--result_file", default="results.txt")
 parser.add_argument("--n_trials_model", type=int, default=10)
 parser.add_argument("--n_trials_weights", type=int, default=10)

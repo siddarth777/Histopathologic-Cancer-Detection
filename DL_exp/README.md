@@ -16,7 +16,7 @@ From repository root:
 
 ```bash
 python -m DL_exp.src_lda --task all --data-dir data --out-dir outputs
-python -m DL_exp.src_optuna --model all --data-dir data --out-dir outputs --n-trials 20
+python -m DL_exp.src_optuna --model all --data-dir data --out-dir outputs --n-trials 20 --n-jobs 2 --epochs 5
 ```
 
 Or through top-level dispatcher:
@@ -29,8 +29,29 @@ python main.py --dl-optuna
 ## Inputs
 
 - `data/train/`
-- `data/test/`
 - `data/train_labels.csv`
+
+`data/test/` is not required for the current DL workflows in this repository.
+
+`train_labels.csv` should contain at least `id` and `label` columns.
+
+## Flags
+
+`python -m DL_exp.src_lda`
+
+- `--task`: `task2`, `task3`, or `all`.
+- `--data-dir`: dataset root containing `train/` and `train_labels.csv`.
+- `--out-dir`: output root for checkpoints/logs/plots.
+
+`python -m DL_exp.src_optuna`
+
+- `--model`: `cnn`, `alexnet`, `resnet50`, `vgg16`, or `all`.
+- `--data-dir`: dataset root containing `train/` and `train_labels.csv`.
+- `--out-dir`: output root for Optuna artifacts.
+- `--n-trials`: number of trials per model.
+- `--n-jobs`: parallel Optuna jobs.
+- `--timeout-minutes`: optional timeout in minutes.
+- `--epochs`: epochs per trial.
 
 ## Outputs
 
@@ -42,6 +63,4 @@ Primary artifacts are written under output directories passed via `--out-dir`, i
 
 ## Related Docs
 
-- `src_lda/README.md`
-- `src_optuna/README.md`
 - `../README.md`

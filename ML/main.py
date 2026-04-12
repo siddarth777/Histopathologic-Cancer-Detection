@@ -15,6 +15,7 @@ SCRIPTS = {
     "naive_bayes": PROJECT_ROOT / "models" / "naive_bayes.py",
     "xgboost": PROJECT_ROOT / "models" / "xgboost_model.py",
     "catboost": PROJECT_ROOT / "models" / "catboost_model.py",
+    "svm": PROJECT_ROOT / "models" / "svm.py",
     "ensemble": PROJECT_ROOT / "run_ensemble_models.py",
 }
 
@@ -75,6 +76,7 @@ def run_all(parsed: argparse.Namespace) -> None:
         "naive_bayes",
         "xgboost",
         "catboost",
+        "svm",
     ]
 
     for model_name in model_order:

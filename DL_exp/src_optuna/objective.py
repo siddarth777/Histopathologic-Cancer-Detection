@@ -1,4 +1,3 @@
-from __future__ import annotations
 
 from .training import train_trial
 from .utils import set_trial_seed

@@ -1,4 +1,3 @@
-from __future__ import annotations
 
 from ..src_lda.config import CFG as BASE_CFG
 

@@ -91,13 +91,15 @@ Recommended starter set for the commands below:
 
 ## Top-Level Dispatcher
 
-`main.py` controls EDA and DL workflows:
+`main.py` controls EDA, DL, and ML workflows:
 
 ```bash
 python main.py --eda
 python main.py --dl-lda --data-dir data --out-dir outputs
-python main.py --dl-optuna --data-dir data --out-dir outputs --n-trials 20
-python main.py --eda --dl-lda --dl-optuna
+python main.py --dl-optuna --model all --data-dir data --out-dir outputs --n-trials 20 --n-jobs 2 --epochs 5
+python main.py --ml-run-all --ml-train-path ML/datasets/full96_train.csv --ml-test-path ML/datasets/full96_test.csv --ml-selected-features-path EDA/outputs/reports/selected_features_Full96.csv
+python main.py --ml-run-best --ml-results-csv ML/results/results_full96.csv --ml-train-path ML/datasets/full96_train.csv --ml-test-path ML/datasets/full96_test.csv --ml-selected-features-path EDA/outputs/reports/selected_features_Full96.csv
+python main.py --eda --dl-lda --dl-optuna --model all --data-dir data --out-dir outputs --n-trials 20 --n-jobs 2 --epochs 5
 ```
 
 Flags for `main.py`:
@@ -113,6 +115,17 @@ Flags for `main.py`:
 - `--timeout-minutes`: optional Optuna timeout; omit to disable timeout.
 - `--epochs`: epochs per Optuna trial.
 - `--eda-batch-size`: batch size used by EDA.
+- `--ml-run-all`: run all ML model scripts.
+- `--ml-run-best`: run only the best ML model chosen from `--ml-results-csv`.
+- `--ml-train-path`: training CSV path for ML pipeline.
+- `--ml-test-path`: holdout/test CSV path for ML pipeline.
+- `--ml-selected-features-path`: selected-features CSV path for ML pipeline.
+- `--ml-results-csv`: results summary CSV used by `--ml-run-best`.
+- `--ml-n-trials`: Optuna trials for single-model ML scripts.
+- `--ml-include-ensemble`: include ML ensemble script when running `--ml-run-all`.
+- `--ml-n-trials-model`: ensemble base-model tuning trials.
+- `--ml-n-trials-weights`: ensemble weight tuning trials.
+- `--ml-ensemble-result-file`: output file for ensemble metrics.
 
 ## Direct DL Commands
 
